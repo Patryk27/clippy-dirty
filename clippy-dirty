@@ -21,7 +21,7 @@ echo " -  Found ${#files[@]} files"
 
 if [[ ${#files[@]} -eq 0 ]]; then
     echo
-    echo "No files are dirty, nothing to do."
+    echo "warn: No files are dirty, nothing to do"
     exit 0
 fi
 
@@ -38,7 +38,7 @@ echo
 while read -r msg; do
     echo -e "$msg"
 done < <(
-    cargo clippy --quiet --message-format=json-diagnostic-rendered-ansi -- "$@" | jq "\
+    cargo clippy --quiet --message-format=json-diagnostic-rendered-ansi -- "$@" | jq "
         select(. | type == \"object\")
         | select(has(\"message\"))
         | select(any(.message.spans[].file_name; $jq_where))
