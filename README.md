@@ -1,6 +1,10 @@
 # clippy-dirty
 
-Runs `cargo clippy` and shows only those messages that affect dirty (i.e. uncommited) files.
+Runs `cargo clippy` and shows only messages affecting uncommited (dirty) files.
+
+## Installation
+
+You can either clone the entire repository and add it to your `PATH` or just copy-paste the `clippy-dirty` script wherever you like.
 
 ## Synopsis
 
