@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+set -e
+
+for app in "cargo" "git" "jq"; do
+    if ! [[ -x "$(command -v ${app})" ]]; then
+      echo "error: $app is not installed" >&2
+      exit 1
+    fi
+done;
+
+echo '[+] Searching for dirty files'
+
+files=()
+
+while read -r status file; do
+    files+=("$file")
+done < <(git status --porcelain)
+
+echo " -  Found ${#files[@]} files"
+
+if [[ ${#files[@]} -eq 0 ]]; then
+    echo
+    echo "No files are dirty, nothing to do.";
+    exit 0;
+fi
+
+jq_where="false"
+
+for file in "${files[@]}"; do
+    jq_where="$jq_where or . == \"$file\""
+done
+
+echo
+echo '[+] Starting `clippy`'
+echo
+
+while read -r msg; do
+    echo -e "$msg"
+done < <(
+    cargo clippy --quiet --message-format=json-diagnostic-rendered-ansi -- "$@" | jq "\
+        select(. | type == \"object\")
+        | select(has(\"message\"))
+        | select(any(.message.spans[].file_name; $jq_where))
+        | .message.rendered
+    " --unbuffered --raw-output
+)
+
