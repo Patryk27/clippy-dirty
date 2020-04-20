@@ -6,6 +6,15 @@ Runs `cargo clippy` and shows only messages affecting uncommited (dirty) files.
 
 You can either clone the entire repository and add it to your `PATH` or just copy-paste the `clippy-dirty` script wherever you like.
 
+## Usage
+
+Use in place of `cargo clippy`, e.g.:
+
+```bash
+$ cd ~/Projects/go-brr-meme-maker
+$ clippy-dirty
+```
+
 ## Synopsis
 
 ```
