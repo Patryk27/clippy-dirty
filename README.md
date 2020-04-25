@@ -51,6 +51,7 @@ Arguments after '--' get passed directly into clippy:
 
 ## Requirements
 
+- bash,
 - cargo,
 - cargo-clippy,
 - git,
