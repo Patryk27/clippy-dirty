@@ -19,8 +19,7 @@ synopsis below.
 ## Installation
 
 - clone this repository and add it to your `PATH`
-or
-- download the `clippy-dirty` script wherever you like and invoke it using full path (e.g. `~/Apps/clippy-dirty`)
+- (or) download the `clippy-dirty` script wherever you like and invoke it using full path (e.g. `~/Apps/clippy-dirty`)
 
 ## Usage
 
@@ -36,17 +35,23 @@ USAGE
     clippy-dirty [options] [--] [clippy-options]
 
 OPTIONS
-    -b files  Shows messages only for the _files_ you've modified
+    -b files  Shows messages only for the files you've modified
               (this is the default behavior)
 
-    -b lines  Shows messages only for the _lines_ you've modified
+    -b lines  Shows messages only for the lines you've modified
               (it's more restrictive than '-b files')
 
     -h        Prints this help
 
-Arguments after '--' get passed directly into clippy:
-    clippy-dirty -- -D clippy::new_without_default
-    clippy-dirty -b lines -- -D clippy::new_without_default
+Arguments after '--' get passed into clippy:
+    clippy-dirty -- --all-targets --all-features
+    clippy-dirty -- -p some-workspace-crate
+    clippy-dirty -- -Z unstable-options
+    clippy-dirty -- -- -D clippy::new_without_default
+    clippy-dirty -b lines -- -- -D clippy::new_without_default
+
+Same for environmental variables:
+    RUSTFLAGS="-D warnings" clippy-dirty
 ```
 
 ## Requirements
@@ -59,7 +64,5 @@ Arguments after '--' get passed directly into clippy:
 
 ## License
 
-MIT License    
-Copyright (c) 2020 Patryk Wychowaniec
-
-Please see the `LICENSE` file for the entire text.
+Copyright (c) 2020-2021, Patryk Wychowaniec <pwychowaniec@pm.me>.    
+Licensed under the MIT license.

@@ -7,17 +7,23 @@ function print-help {
     echo "    clippy-dirty [options] [--] [clippy-options]"
     echo
     echo "OPTIONS"
-    echo "    -b files  Shows messages only for the _files_ you've modified"
+    echo "    -b files  Shows messages only for the files you've modified"
     echo "              (this is the default behavior)"
     echo
-    echo "    -b lines  Shows messages only for the _lines_ you've modified"
+    echo "    -b lines  Shows messages only for the lines you've modified"
     echo "              (it's more restrictive than '-b files')"
-    echo ""
+    echo
     echo "    -h        Prints this help"
     echo
-    echo "Arguments after '--' get passed directly into clippy:"
-    echo "    clippy-dirty -- -D clippy::new_without_default"
-    echo "    clippy-dirty -b lines -- -D clippy::new_without_default"
+    echo "Arguments after '--' get passed into clippy:"
+    echo "    clippy-dirty -- --all-targets --all-features"
+    echo "    clippy-dirty -- -p some-workspace-crate"
+    echo "    clippy-dirty -- -Z unstable-options"
+    echo "    clippy-dirty -- -- -D clippy::new_without_default"
+    echo "    clippy-dirty -b lines -- -- -D clippy::new_without_default"
+    echo
+    echo "Same for environmental variables:"
+    echo "    RUSTFLAGS=\"-D warnings\" clippy-dirty"
 }
 
 # Invokes `git status` and prepares a list of all the modified
@@ -107,7 +113,7 @@ function launch-clippy {
     while read -r msg; do
         echo -e "$msg"
     done < <(
-        cargo clippy --quiet --message-format=json-diagnostic-rendered-ansi -- "$@" | jq "
+        cargo clippy --quiet --message-format=json-diagnostic-rendered-ansi "$@" | jq "
             select(. | type == \"object\")
             | select(has(\"message\"))
             | select(any(.message.spans[]; $jq_where))
