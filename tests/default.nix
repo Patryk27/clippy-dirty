@@ -5,6 +5,7 @@ let
     ./dirty-files-two-staged
     ./dirty-files-two-unstaged
     ./dirty-lines
+    ./issue-3
   ];
 
   # ----- #

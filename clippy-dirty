@@ -61,6 +61,12 @@ function find-dirty-files {
     done < <(git status --porcelain=2)
 }
 
+# Escapes slashes, quotes etc. inside the file name so that it can be passed
+# straight into jq.
+function jq-escape-file {
+    printf "%s" "$1" | jq -R -s '.'
+}
+
 # Builds a condition that gets passed into `jq` for when `-b files` has been
 # enabled.
 #
@@ -73,7 +79,8 @@ function build-condition-for-dirty-files {
     jq_where="false"
 
     for file in "${files[@]}"; do
-        jq_where="$jq_where or .file_name == \"$file\""
+        jq_file=$(jq-escape-file "$file")
+        jq_where="$jq_where or .file_name == $jq_file"
     done
 }
 
@@ -94,14 +101,16 @@ function build-condition-for-dirty-lines {
         # messages for the entire file
 
         if [[ -z $(git ls-files "$file") ]]; then
-            jq_where="$jq_where or .file_name == \"$file\""
+            jq_file=$(jq-escape-file "$file")
+            jq_where="$jq_where or .file_name == $jq_file"
         else
             while read -r commit _ line _; do
                 if [[ ! "$commit" == "0000000000000000000000000000000000000000" ]]; then
                     continue
                 fi
 
-                jq_where="$jq_where or (.file_name == \"$file\" and .line_start >= $line and .line_end <= $line)"
+                jq_file=$(jq-escape-file "$file")
+                jq_where="$jq_where or (.file_name == $jq_file and .line_start >= $line and .line_end <= $line)"
             done < <(git blame --incremental "$file")
        fi
     done
