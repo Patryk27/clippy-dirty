@@ -62,6 +62,11 @@ Same for environmental variables:
 - git,
 - jq.
 
+## Tests
+
+Tests are located inside `./tests` - to run them, you'll have to have Nix
+installed, and then it's as easy as `./test`.
+
 ## License
 
 Copyright (c) 2020-2021, Patryk Wychowaniec <pwychowaniec@pm.me>.    

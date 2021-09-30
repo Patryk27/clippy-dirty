@@ -1,0 +1,17 @@
+Initial commit
+
+# Podaj komunikat zapisu swoich zmian. Wiersze zaczynające się
+# od „#” będą ignorowane, a pusty komunikat przerwie zapis.
+#
+# Na gałęzi main
+#
+# Pierwszy zapis
+#
+# Zmiany do złożenia:
+#	nowy plik:       Cargo.lock
+#	nowy plik:       Cargo.toml
+#	nowy plik:       src/lib.rs
+#
+# Zmiany nie przygotowane do złożenia:
+#	zmieniono:       src/lib.rs
+#
