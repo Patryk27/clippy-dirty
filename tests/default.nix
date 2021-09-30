@@ -47,9 +47,6 @@ let
     in
     pkgs.runCommandLocal "test" { } ''
       export PATH="$PATH:${clippy-dirty}/bin"
-      export path="$path:${pkgs.gawk}/bin"
-      export path="$path:${pkgs.gnugrep}/bin"
-      export path="$path:${pkgs.gnused}/bin"
 
       cp -avr ${src}/fixtures /tmp/test
       cd /tmp/test
