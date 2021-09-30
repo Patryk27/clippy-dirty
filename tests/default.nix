@@ -2,6 +2,8 @@ let
   tests = [
     ./dirty-files-one-staged
     ./dirty-files-one-unstaged
+    ./dirty-files-one-untracked-allowed
+    ./dirty-files-one-untracked-forbidden
     ./dirty-files-two-staged
     ./dirty-files-two-unstaged
     ./dirty-lines

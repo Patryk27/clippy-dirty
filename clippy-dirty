@@ -13,12 +13,13 @@ function print-help {
     echo "    -b lines  Shows messages only for the lines you've modified"
     echo "              (it's more restrictive than '-b files')"
     echo
+    echo "    -u        Ignore untracked files"
+    echo
     echo "    -h        Prints this help"
     echo
     echo "Arguments after '--' get passed into clippy:"
+    echo "    clippy-dirty -- -p workspace-crate"
     echo "    clippy-dirty -- --all-targets --all-features"
-    echo "    clippy-dirty -- -p some-workspace-crate"
-    echo "    clippy-dirty -- -Z unstable-options"
     echo "    clippy-dirty -- -- -D clippy::new_without_default"
     echo "    clippy-dirty -b lines -- -- -D clippy::new_without_default"
     echo
@@ -39,10 +40,11 @@ function find-dirty-files {
 
         # When a file is untracked, we get its name in `$a` and when it's
         # tracked, inside `$b`.
-        #
-        # You can try running `git status --porcelain=2`, if you want to see it
-        # on your very own.
         if [[ -z "$b" ]]; then
+            if [[ "${show_untracked}" == "no" ]]; then
+                continue;
+            fi
+
             file="$a"
         else
             file="$b"
@@ -145,8 +147,9 @@ done
 # Parse arguments #
 
 basis="files"
+show_untracked="yes"
 
-while getopts ":b:h" opt; do
+while getopts "b:hu" opt; do
     case "$opt" in
        "b")
            basis="$OPTARG"
@@ -155,6 +158,10 @@ while getopts ":b:h" opt; do
         "h")
             print-help
             exit
+            ;;
+
+        "u")
+            show_untracked="no"
             ;;
 
         *)
