@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-nix-build ./tests --max-jobs 1 --no-out-link
